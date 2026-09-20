@@ -52,7 +52,7 @@ class ChatRequest(BaseModel):
 @app.get("/health")
 async def health():
     return {"status": "ok", "provider": "gemini", "configured": bool(os.getenv("GEMINI_API_KEY", "").strip()),
-            "model": os.getenv("GEMINI_MODEL", "gemini-2.5-flash")}
+            "model": os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest")}
 
 
 @app.get("/tools")
@@ -85,7 +85,7 @@ async def chat(payload: ChatRequest):
                     try:
                         result = await run_chat(client, session, payload.message,
                                                 [message.model_dump() for message in payload.history],
-                                                os.getenv("GEMINI_MODEL", "gemini-2.5-flash"))
+                                                os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest"))
                     except Exception as exc:
                         failure = exc
                 if failure is not None:

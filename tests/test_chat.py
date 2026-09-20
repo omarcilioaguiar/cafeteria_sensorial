@@ -119,7 +119,7 @@ async def test_real_gemini_sdk_serialization_without_external_request():
     async with httpx.AsyncClient(transport=httpx.MockTransport(handle)) as http_client:
         async with genai.Client(api_key="test-not-real", http_options=types.HttpOptions(
             httpx_async_client=http_client)).aio as client:
-            result = await run_chat(client, session_fixture(), "Quais grãos?", [], "gemini-2.5-flash")
+            result = await run_chat(client, session_fixture(), "Quais grãos?", [], "gemini-flash-lite-latest")
     assert result["answer"] == "Catálogo consultado."
     assert requests[0]["tools"][0]["functionDeclarations"][0]["name"] == "graos_listar"
     assert requests[1]["contents"][1]["parts"][0]["thoughtSignature"] == "c2ln"

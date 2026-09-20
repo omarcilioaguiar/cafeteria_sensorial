@@ -96,7 +96,7 @@ services:
     environment:
       MCP_URL: http://mcp:8000/mcp
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
-      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-flash-lite-latest}
     ports: ["127.0.0.1:${CHAT_PORT:-8005}:8000"]
     networks: [cafeteria]
     restart: unless-stopped
