@@ -29,7 +29,7 @@ As portas podem ser alteradas no `.env`. Os endereços internos usam os nomes do
 
 ## Habilitar o chat com IA
 
-Edite `.env` e preencha `GEMINI_API_KEY` com uma chave da API Gemini. O modelo padrão é `gemini-2.5-flash`; `GEMINI_MODEL` permite selecionar outro modelo com function calling disponível na sua conta. Depois:
+Edite `.env` e preencha `GEMINI_API_KEY` com uma chave da API Gemini. O modelo padrão é `gemini-flash-lite-latest` (utilizado para evitar esgotamento rápido da cota gratuita); `GEMINI_MODEL` permite selecionar outro modelo com function calling disponível na sua conta. Depois:
 
 ```bash
 docker compose up -d --force-recreate chat
