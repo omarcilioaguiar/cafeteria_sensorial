@@ -1,0 +1,37 @@
+[
+  {
+    "nome": "V60",
+    "proporcao": "1:15",
+    "moagem": "média",
+    "temperatura_c": 93,
+    "tempo_segundos": 180
+  },
+  {
+    "nome": "Chemex",
+    "proporcao": "1:16",
+    "moagem": "grossa",
+    "temperatura_c": 94,
+    "tempo_segundos": 240
+  },
+  {
+    "nome": "Prensa francesa",
+    "proporcao": "1:12",
+    "moagem": "grossa",
+    "temperatura_c": 92,
+    "tempo_segundos": 240
+  },
+  {
+    "nome": "Espresso",
+    "proporcao": "1:2",
+    "moagem": "fina",
+    "temperatura_c": 93,
+    "tempo_segundos": 28
+  },
+  {
+    "nome": "Aeropress",
+    "proporcao": "1:14",
+    "moagem": "média",
+    "temperatura_c": 90,
+    "tempo_segundos": 120
+  }
+]

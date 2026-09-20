@@ -1,0 +1,18 @@
+{
+  "nome": "Aurora da Chapada",
+  "origem": {
+    "fazenda": "Fazenda Aurora",
+    "regiao": "Chapada Diamantina",
+    "pais": "Brasil"
+  },
+  "variedade": "Catuaí amarelo",
+  "processo": "natural",
+  "ponto_torra": "clara",
+  "notas_sensoriais": [
+    "frutas amarelas",
+    "mel",
+    "floral"
+  ],
+  "preco_kg": 98.0,
+  "sacas_estoque": 12
+}

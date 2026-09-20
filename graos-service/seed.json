@@ -1,0 +1,56 @@
+[
+  {
+    "nome": "Aurora da Chapada",
+    "origem": {
+      "fazenda": "Fazenda Aurora",
+      "regiao": "Chapada Diamantina",
+      "pais": "Brasil"
+    },
+    "variedade": "Catuaí amarelo",
+    "processo": "natural",
+    "ponto_torra": "clara",
+    "notas_sensoriais": [
+      "frutas amarelas",
+      "mel",
+      "floral"
+    ],
+    "preco_kg": 98.0,
+    "sacas_estoque": 12
+  },
+  {
+    "nome": "Mantiqueira Doce",
+    "origem": {
+      "fazenda": "Sítio das Nuvens",
+      "regiao": "Mantiqueira de Minas",
+      "pais": "Brasil"
+    },
+    "variedade": "Bourbon amarelo",
+    "processo": "honey",
+    "ponto_torra": "média",
+    "notas_sensoriais": [
+      "caramelo",
+      "chocolate",
+      "castanhas"
+    ],
+    "preco_kg": 112.0,
+    "sacas_estoque": 8
+  },
+  {
+    "nome": "Cerrado ao Sol",
+    "origem": {
+      "fazenda": "Fazenda Horizonte",
+      "regiao": "Cerrado Mineiro",
+      "pais": "Brasil"
+    },
+    "variedade": "Mundo novo",
+    "processo": "lavado",
+    "ponto_torra": "média",
+    "notas_sensoriais": [
+      "cacau",
+      "açúcar mascavo",
+      "laranja"
+    ],
+    "preco_kg": 86.0,
+    "sacas_estoque": 20
+  }
+]

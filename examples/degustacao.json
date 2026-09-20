@@ -1,0 +1,17 @@
+{
+  "grao_id": 1,
+  "metodo_id": 1,
+  "parametros": {
+    "moagem": "média",
+    "temperatura_c": 93,
+    "tempo_segundos": 180
+  },
+  "avaliacao": {
+    "acidez": 4,
+    "corpo": 3,
+    "docura": 5
+  },
+  "nota_final": 9.2,
+  "comentario": "Floral delicado, final longo de mel.",
+  "data": "2026-09-19T09:00:00-03:00"
+}

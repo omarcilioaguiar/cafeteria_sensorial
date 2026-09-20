@@ -1,0 +1,70 @@
+[
+  {
+    "grao_id": 1,
+    "metodo_id": 1,
+    "parametros": {
+      "moagem": "média",
+      "temperatura_c": 93,
+      "tempo_segundos": 180
+    },
+    "avaliacao": {
+      "acidez": 4,
+      "corpo": 3,
+      "docura": 5
+    },
+    "nota_final": 9.2,
+    "comentario": "Floral delicado, final longo de mel.",
+    "data": "2026-09-19T09:00:00-03:00"
+  },
+  {
+    "grao_id": 2,
+    "metodo_id": 4,
+    "parametros": {
+      "moagem": "fina",
+      "temperatura_c": 93,
+      "tempo_segundos": 28
+    },
+    "avaliacao": {
+      "acidez": 2,
+      "corpo": 5,
+      "docura": 4
+    },
+    "nota_final": 8.8,
+    "comentario": "Corpo intenso e caramelo persistente.",
+    "data": "2026-09-19T10:00:00-03:00"
+  },
+  {
+    "grao_id": 3,
+    "metodo_id": 3,
+    "parametros": {
+      "moagem": "grossa",
+      "temperatura_c": 92,
+      "tempo_segundos": 240
+    },
+    "avaliacao": {
+      "acidez": 3,
+      "corpo": 4,
+      "docura": 3
+    },
+    "nota_final": 8.1,
+    "comentario": "Cacau com leve toque cítrico.",
+    "data": "2026-09-19T11:00:00-03:00"
+  },
+  {
+    "grao_id": 1,
+    "metodo_id": 5,
+    "parametros": {
+      "moagem": "média",
+      "temperatura_c": 90,
+      "tempo_segundos": 120
+    },
+    "avaliacao": {
+      "acidez": 4,
+      "corpo": 4,
+      "docura": 5
+    },
+    "nota_final": 9.4,
+    "comentario": "Frutas amarelas e doçura muito limpa.",
+    "data": "2026-09-19T12:00:00-03:00"
+  }
+]

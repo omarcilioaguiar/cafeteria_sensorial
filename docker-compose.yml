@@ -1,0 +1,114 @@
+name: cafeteria-sensorial
+
+x-api: &api
+  restart: unless-stopped
+  networks: [cafeteria]
+  depends_on:
+    postgres:
+      condition: service_healthy
+  healthcheck:
+    test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+    interval: 5s
+    timeout: 4s
+    retries: 5
+    start_period: 15s
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: cafeteria_admin
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cafeteria_admin_local}
+      GRAOS_DB_PASSWORD: ${GRAOS_DB_PASSWORD:-graos_local}
+      METODO_DB_PASSWORD: ${METODO_DB_PASSWORD:-metodo_local}
+      DEGUSTACAO_DB_PASSWORD: ${DEGUSTACAO_DB_PASSWORD:-degustacao_local}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sh:/docker-entrypoint-initdb.d/01-init.sh:ro
+    networks: [cafeteria]
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U cafeteria_admin -d postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+
+  graos-service:
+    <<: *api
+    build:
+      context: .
+      dockerfile: graos-service/Dockerfile
+    environment:
+      DB_HOST: postgres
+      DB_NAME: graos
+      DB_USER: graos
+      DB_PASSWORD: ${GRAOS_DB_PASSWORD:-graos_local}
+    ports: ["127.0.0.1:${GRAOS_PORT:-8001}:8000"]
+
+  metodo-service:
+    <<: *api
+    build:
+      context: .
+      dockerfile: metodo-service/Dockerfile
+    environment:
+      DB_HOST: postgres
+      DB_NAME: metodo
+      DB_USER: metodo
+      DB_PASSWORD: ${METODO_DB_PASSWORD:-metodo_local}
+    ports: ["127.0.0.1:${METODO_PORT:-8002}:8000"]
+
+  degustacao-service:
+    <<: *api
+    build:
+      context: .
+      dockerfile: degustacao-service/Dockerfile
+    environment:
+      DB_HOST: postgres
+      DB_NAME: degustacao
+      DB_USER: degustacao
+      DB_PASSWORD: ${DEGUSTACAO_DB_PASSWORD:-degustacao_local}
+    ports: ["127.0.0.1:${DEGUSTACAO_PORT:-8003}:8000"]
+
+  client:
+    build: ./client
+    ports: ["127.0.0.1:${CLIENT_PORT:-8080}:80"]
+    networks: [cafeteria]
+    restart: unless-stopped
+
+  mcp:
+    build: ./mcp
+    environment:
+      GRAOS_URL: http://graos-service:8000
+      METODO_URL: http://metodo-service:8000
+      DEGUSTACAO_URL: http://degustacao-service:8000
+    ports: ["127.0.0.1:${MCP_PORT:-8004}:8000"]
+    networks: [cafeteria]
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 5s
+      timeout: 4s
+      retries: 5
+
+  chat:
+    build: ./chat
+    environment:
+      MCP_URL: http://mcp:8000/mcp
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
+    ports: ["127.0.0.1:${CHAT_PORT:-8005}:8000"]
+    networks: [cafeteria]
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 5s
+      timeout: 4s
+      retries: 5
+
+networks:
+  cafeteria:
+    driver: bridge
+
+volumes:
+  postgres_data:

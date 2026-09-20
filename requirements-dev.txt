@@ -1,0 +1,6 @@
+-r requirements-api.txt
+-r mcp/requirements.txt
+-r chat/requirements.txt
+pytest==9.1.1
+pytest-asyncio==1.4.0
+playwright==1.63.0
