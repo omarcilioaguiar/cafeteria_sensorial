@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 # Rate limiter simples: máximo de requisições por janela de tempo.
 # Protege a cota gratuita da API Gemini contra uso excessivo.
 _RATE_WINDOW = int(os.getenv("CHAT_RATE_WINDOW", "60"))
-_RATE_LIMIT = int(os.getenv("CHAT_RATE_LIMIT", "4"))
+_RATE_LIMIT = int(os.getenv("CHAT_RATE_LIMIT", "2"))
 _request_log: deque[float] = deque()
 
 
@@ -75,7 +75,7 @@ async def chat(payload: ChatRequest):
         async with asyncio.timeout(75):
             async with genai.Client(api_key=key, http_options=types.HttpOptions(
                 timeout=25000, retry_options=types.HttpRetryOptions(
-                    attempts=3, initial_delay=1, max_delay=2, http_status_codes=[503]
+                    attempts=4, initial_delay=2, max_delay=5, http_status_codes=[429, 503]
                 )
             )).aio as client:
                 failure = None
