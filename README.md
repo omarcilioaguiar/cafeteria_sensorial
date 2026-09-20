@@ -80,7 +80,7 @@ chat/               # API de chat e ponte MCP → Gemini → MCP
 examples/           # Corpos JSON para POSTs via curl ou Swagger
 tests/              # Testes de contrato REST, MCP e orquestração do chat
 scripts/            # Verificação de MCP e teste real no navegador
-docs/               # Roteiro de demonstração e registro de validação
+docs/               # Registro de validação e documentação complementar
 docker-compose.yml  # Sete contêineres, rede e volume persistente
 .env.example        # Configuração local de exemplo
 ```
@@ -220,7 +220,7 @@ Os healthchecks do MCP e do chat indicam que seus processos estão disponíveis;
 
 ## Entrega e referências
 
-O [roteiro de vídeo](docs/ROTEIRO-VIDEO.md) organiza uma demonstração de até sete minutos. As obrigações acadêmicas de aprovação do tema e envio do material são descritas no PDF do professor; este projeto não envia e-mails nem publica entregas automaticamente.
+As obrigações acadêmicas de aprovação do tema e envio do material são descritas no PDF do professor; este projeto não envia e-mails nem publica entregas automaticamente.
 
 - [SDK Python oficial do MCP, linha 1.x](https://github.com/modelcontextprotocol/python-sdk/tree/v1.x).
 - [Gemini: function calling na Gemini API](https://ai.google.dev/gemini-api/docs/function-calling).
