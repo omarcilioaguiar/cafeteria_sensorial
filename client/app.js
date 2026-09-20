@@ -96,10 +96,26 @@ let history = [];
 let chatBusy = false;
 let cooldownUntil = 0;
 const COOLDOWN_MS = 15000;
+function formatMarkdown(text) {
+  // Escapa HTML para segurança
+  const div = document.createElement('div');
+  div.textContent = text;
+  let html = div.innerHTML;
+
+  // Formata negrito
+  html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  // Formata listas simples com * ou -
+  html = html.replace(/^(?:\s*)(?:-|\*)\s+(.*)/gm, '• $1');
+  // Formata quebras de linha
+  html = html.replace(/\n/g, '<br>');
+  
+  return html;
+}
+
 function addMessage(text, kind) {
   const node = document.createElement('div');
   node.className = `message ${kind}-message`;
-  node.textContent = text;
+  node.innerHTML = formatMarkdown(text);
   const messages = document.querySelector('#messages');
   messages.append(node);
   messages.scrollTop = messages.scrollHeight;
