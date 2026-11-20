@@ -1,5 +1,15 @@
 # Cafeteria Sensorial
 
+## Evolução: Sistema Especialista para Web
+
+Tema aprovado para a nova atividade: **Cafeteria Sensorial — orientação de preparo e avaliação sensorial de cafés especiais**. A evolução mantém as APIs, PostgreSQL, cliente e seis ferramentas MCP e acrescenta conhecimento curado, comportamento de especialista, cache semântico persistente e avaliação LLM-as-a-Judge.
+
+Consulte o [guia de execução](docs/GUIA-ENTREGA.md), o [capítulo em LaTeX](docs/capitulo_cafeteria/) e os [resultados da avaliação](docs/VALIDACAO-ESPECIALISTA.md). [Código-fonte no Zenodo](https://doi.org/10.5281/zenodo.24386960) e [vídeo demonstrativo](https://zenodo.org/records/24387783).
+
+O chat agora permite perguntas conceituais sem ferramentas e solicita informações quando faltam dados para orientar um preparo. O cache segue o exemplo das aulas (SentenceTransformers + ChromaDB), com restrições adicionais de contexto, TTL e versionamento. A API informa sua disponibilidade em `/health`; a interface distingue respostas recuperadas do cache. Para avaliar o sistema completo, execute `docker compose exec -T chat python julgamento.py`.
+
+As seções abaixo documentam a base da disciplina anterior. A obrigação acadêmica atual é a descrita no guia da evolução, incluindo capítulo, vídeo de até oito minutos e publicação dos materiais no Zenodo.
+
 Projeto individual de **Desenvolvimento de Aplicações Orientadas a Serviços**, pós-graduação IFBA — Campus Vitória da Conquista. Professor Luis Paulo da Silva Carvalho. Entrega prevista no enunciado: **20/09/2026**.
 
 Catálogo de cafés especiais, métodos de preparo e registros de degustação. Três APIs REST em Python/FastAPI, PostgreSQL, cliente web resiliente, servidor MCP oficial e chat com Gemini.

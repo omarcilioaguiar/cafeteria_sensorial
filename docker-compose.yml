@@ -97,6 +97,16 @@ services:
       MCP_URL: http://mcp:8000/mcp
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       GEMINI_MODEL: ${GEMINI_MODEL:-gemini-flash-lite-latest}
+      JUDGE_MODEL: ${JUDGE_MODEL:-gemini-flash-lite-latest}
+      CACHE_ENABLED: ${CACHE_ENABLED:-true}
+      CACHE_MODEL: ${CACHE_MODEL:-sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2}
+      CACHE_PATH: /app/data/cache
+      CACHE_DISTANCE: ${CACHE_DISTANCE:-0.20}
+      CACHE_TTL_SECONDS: ${CACHE_TTL_SECONDS:-86400}
+      CHAT_RATE_LIMIT: ${CHAT_RATE_LIMIT:-2}
+      CHAT_RATE_WINDOW: ${CHAT_RATE_WINDOW:-60}
+    volumes:
+      - specialist_data:/app/data
     ports: ["127.0.0.1:${CHAT_PORT:-8005}:8000"]
     networks: [cafeteria]
     restart: unless-stopped
@@ -112,3 +122,4 @@ networks:
 
 volumes:
   postgres_data:
+  specialist_data:

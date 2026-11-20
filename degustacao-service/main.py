@@ -15,6 +15,10 @@ class Parametros(BaseModel):
     moagem: Literal["fina", "média", "grossa"]
     temperatura_c: float = Field(gt=0, le=100)
     tempo_segundos: int = Field(gt=0, le=86400)
+    cafe_g: float | None = Field(default=None, gt=0, le=10000)
+    agua_g: float | None = Field(default=None, gt=0, le=100000)
+    bebida_g: float | None = Field(default=None, gt=0, le=100000,
+                                  description="Massa da bebida obtida; distinta da água de preparo")
 
 
 class Avaliacao(BaseModel):

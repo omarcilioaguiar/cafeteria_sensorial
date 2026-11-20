@@ -1,0 +1,70 @@
+\chapter{Cafeteria Sensorial: um Especialista Conversacional em Preparo de Cafés}
+\begin{flushright}
+Marcílio Pereira Aguiar
+\end{flushright}
+
+A Cafeteria Sensorial é um sistema especialista conversacional para orientação de preparo e interpretação de avaliações sensoriais de cafés especiais. Seu objetivo é apoiar usuários que desejam relacionar características dos grãos, parâmetros de preparo e resultados percebidos. A solução evolui um projeto de serviços web desenvolvido anteriormente, acrescentando conhecimento de domínio, cache semântico e avaliação automatizada.
+
+O assistente não substitui uma avaliação profissional nem certifica qualidade. Recomendações são hipóteses fundamentadas nas informações disponíveis: uma percepção de acidez, por exemplo, não determina isoladamente a causa de um resultado desagradável. O recorte combina orientações pedagógicas de preparo e análise sensorial com consulta a registros locais, distinguindo descritores, preferências e evidências \cite{cafe_sca_ratio,cafe_compass,cafe_sca_cva}.
+
+\section{Arquitetura da Cafeteria Sensorial}
+
+A aplicação mantém três serviços REST independentes, responsáveis por grãos, métodos e degustações. Cada serviço possui contêiner e banco próprios em uma instância PostgreSQL compartilhada. O cliente web consulta os serviços com tempos limites e tentativas independentes; uma API indisponível não interrompe os demais painéis. O servidor MCP funciona como interface entre as consultas REST e o núcleo conversacional.
+
+O núcleo utiliza um LLM Gemini com instruções de domínio e uma base JSON de orientações e fontes. O histórico recente constitui o contexto de trabalho. O modelo decide quando obter informações externas e recebe os resultados das ferramentas antes de elaborar a resposta. Para registros do balcão, as instruções exigem consulta, identificação das evidências e explicitação de indisponibilidades. Para problemas incompletos, o assistente deve solicitar informações e propor testes controlados.
+
+\begin{figure}[htbp]
+\centering
+\fbox{\parbox{0.91\textwidth}{\centering
+Usuário $\rightarrow$ Cliente web $\rightarrow$ Núcleo especialista\\[3pt]
+Núcleo: contexto + conhecimento + cache semântico + LLM\\[3pt]
+LLM $\leftrightarrow$ MCP $\rightarrow$ APIs de grãos, métodos e degustações\\[3pt]
+APIs $\rightarrow$ bancos separados no PostgreSQL\\[3pt]
+Script de avaliação $\rightarrow$ chat completo $\rightarrow$ LLM julgador
+}}
+\caption{Componentes e fluxo de consulta da Cafeteria Sensorial.}
+\label{fig:cafe-arquitetura}
+\end{figure}
+
+O cache utiliza \textit{SentenceTransformers} para representar perguntas e ChromaDB para persistir vetores e respostas. Antes de gerar uma nova resposta, procura-se uma pergunta próxima por distância de cosseno. O limiar inicial de 0,20 acompanha o exemplo da disciplina e deve ser calibrado, não interpretado como probabilidade de acerto. Apenas perguntas conceituais independentes e respostas sem ferramentas são elegíveis. Histórico, números, negações e referências a dados mutáveis impedem a reutilização conservadoramente. Modelo, versão do conhecimento e prazo de validade também limitam o reaproveitamento.
+
+\section{Ferramentas MCP}
+
+O protocolo MCP padroniza a descoberta e invocação das capacidades externas \cite{cafe_mcp}. A solução conserva seis ferramentas, apresentadas na Tabela~\ref{tab:cafe-tools}. Elas consultam as APIs, sem acesso direto aos bancos, e retornam falhas por domínio. O cliente MCP e o servidor utilizam o SDK oficial e transporte HTTP.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ll}
+\hline
+Domínio & Ferramentas de consulta\\
+\hline
+Grãos & \texttt{graos\_listar}, \texttt{graos\_obter}\\
+Métodos & \texttt{metodos\_listar}, \texttt{metodos\_obter}\\
+Degustações & \texttt{degustacoes\_listar}, \texttt{degustacoes\_obter}\\
+\hline
+\end{tabular}
+\caption{Ferramentas disponibilizadas ao especialista.}
+\label{tab:cafe-tools}
+\end{table}
+
+Consultas permitem comparar avaliações e relacionar identificadores aos catálogos. As notas finais usam escala de zero a dez; acidez, corpo e doçura, de um a cinco. Médias descrevem a amostra cadastrada e devem informar sua quantidade, sem estabelecer superioridade universal. Os dados iniciais são fictícios. Massas de café, água e bebida podem ser registradas opcionalmente; ausência desses valores não comprova a proporção realmente utilizada.
+
+\section{Desenvolvimento e Avaliação}
+
+A implementação utiliza Python, FastAPI, Pydantic, PostgreSQL, JavaScript, Nginx e Docker Compose. O SDK Google GenAI realiza a comunicação com Gemini; a integração MCP executa as ferramentas escolhidas pelo modelo. A interface identifica a origem da resposta e permite iniciar nova conversa. Falha no cache mantém o atendimento pelo LLM, com indicação de que o cache está indisponível.
+
+O script de avaliação aplica \textit{LLM-as-a-Judge} ao endpoint completo do chat, com cache desativado. Doze casos cobrem conceitos, cálculo de proporção, diagnóstico incompleto, catálogo, médias, métodos, dados ausentes, registro inexistente, escopo e tentativa de fabricação. O julgador recebe pergunta, resposta, critérios esperados e evidências MCP. Avalia correção, fundamentação, clareza, tratamento da incerteza e respeito ao escopo, produzindo decisão estruturada e justificativa.
+
+Dois controles com respostas propositalmente incorretas devem ser rejeitados antes dos casos reais. Aprovação exige veredicto exato e coerência entre todos os critérios; ferramentas obrigatórias também são verificadas pelo script. O relatório separa aprovações, reprovações e erros e inclui casos planejados não concluídos no denominador. Modelos e versão do conhecimento são registrados, permitindo identificar as condições da execução.
+
+% BEGIN VALIDATION
+Em uma execução real, os dois controles do julgador foram registrados e 12 de 12 casos planejados foram aprovados, com 0 reprovações e 0 erros. O estado da execução foi completed. O ensaio de cache recuperou uma paráfrase com distância de cosseno 0.027, inferior ao limiar 0,20. A integração REST/MCP e a recuperação dos três serviços foram verificadas com os contêineres e o navegador reais. Esses resultados descrevem apenas os casos e as condições registrados, sem estabelecer acurácia geral. Assistente e julgador utilizaram o mesmo alias de modelo com instruções distintas, limitando a independência da avaliação.
+% END VALIDATION
+
+Os testes de software verificam contrato, integração, falhas e isolamento do cache; modelos simulados não demonstram qualidade técnica real. O julgamento automático também pode errar e compartilha limitações dos LLMs. A revisão humana das justificativas, a pequena cobertura de casos e a dependência de cotas externas devem acompanhar a interpretação dos resultados.
+
+\section{Reproducibilidade e Reuso}
+
+A inicialização é realizada por \texttt{docker compose up} \texttt{-d --build}. O script \texttt{julgamento.py} é executado no contêiner do chat e grava relatório JSON persistente. A configuração de modelos, cache e credenciais é feita por variáveis de ambiente; chaves não integram o material distribuído.
+
+O \href{https://doi.org/10.5281/zenodo.24386960}{código-fonte e os relatórios de avaliação} estão disponíveis no Zenodo. O \href{https://zenodo.org/records/24387783}{vídeo demonstrativo} apresenta a inicialização do sistema, as consultas via MCP, o uso do cache semântico e a execução do julgador.

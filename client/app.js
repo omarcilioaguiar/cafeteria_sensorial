@@ -141,6 +141,7 @@ async function chatStatus() {
   try {
     const status = await request('/api/chat/health');
     node.textContent = status.configured ? '● Pronto para conversar' : 'Configure GEMINI_API_KEY';
+    document.querySelector('#cache-status').textContent = ({ready:'Cache semântico pronto', starting:'Preparando cache semântico…', unavailable:'Cache indisponível; consultas seguem pela IA', disabled:'Cache desativado'})[status.cache?.state] || '';
   } catch { node.textContent = 'Chat indisponível'; }
   setTimeout(chatStatus, 10000);
 }
@@ -160,6 +161,10 @@ document.querySelector('#chat-form').addEventListener('submit', async event => {
   try {
     const result = await request('/api/chat/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message, history})}, 90000);
     const node = addMessage(result.answer, 'assistant');
+    const origin = document.createElement('span');
+    origin.className = 'tool-trace';
+    origin.textContent = result.cache?.hit ? 'Resposta recuperada do cache semântico' : 'Resposta gerada pelo especialista';
+    node.append(origin);
     if (result.tools_used.length) {
       const trace = document.createElement('span');
       trace.className = 'tool-trace';
@@ -182,3 +187,9 @@ document.querySelectorAll('.suggestions button').forEach(button => button.addEve
   document.querySelector('#question').value = button.textContent;
   document.querySelector('#question').focus();
 }));
+document.querySelector('#new-conversation').addEventListener('click', () => {
+  if (chatBusy) return;
+  history = [];
+  document.querySelector('#messages').replaceChildren();
+  addMessage('Nova conversa. Conte seu objetivo ou sua dúvida sobre preparo de cafés.', 'assistant');
+});

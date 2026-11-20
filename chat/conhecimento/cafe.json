@@ -1,0 +1,16 @@
+{
+  "versao": "1.0",
+  "escopo": "Orientação pedagógica de preparo e avaliação sensorial; os seeds do balcão são fictícios.",
+  "orientacoes": [
+    {"id": "O1", "tema": "Proporção", "texto": "Em coados, 1:15 representa 1 g de café para 15 g de água de preparo. Para 20 g de café, são 300 g de água. Isso descreve uma receita inicial, não uma garantia de qualidade. No espresso, diferencie água de preparo de massa da bebida obtida.", "fontes": ["F1"]},
+    {"id": "O2", "tema": "Investigação sensorial", "texto": "Acidez pode ser característica do grão. Uma percepção desagradável isolada não determina a causa. Antes de sugerir ajuste, solicite método, café e água em massa (ou bebida obtida no espresso), moagem, temperatura, tempo, torra e descrição do resultado. Não conclua subextração apenas pela acidez, nem sobre-extração apenas pelo amargor.", "fontes": ["F2"]},
+    {"id": "O3", "tema": "Ajuste controlado", "texto": "Uma comparação útil mantém grão, método e receita registrados e altera uma variável por vez. Moagem, tempo de contato e temperatura podem afetar a extração, mas seus efeitos dependem do método e de outras condições. Apresente uma hipótese e um teste, sem prometer uma solução universal.", "fontes": ["F2"]},
+    {"id": "O4", "tema": "Avaliação e evidências", "texto": "Descreva aroma, acidez, doçura, corpo e finalização e registre os parâmetros efetivamente usados. Uma média de notas subjetivas com poucas avaliações só descreve a amostra. Diferencie descritores do catálogo, opiniões de degustação e qualidade certificada.", "fontes": ["F3"]},
+    {"id": "O5", "tema": "Comparação de métodos", "texto": "A escolha de método depende dos equipamentos disponíveis e do resultado desejado. Apresente os parâmetros cadastrados como ponto de partida e solicite preferências e medidas antes de personalizar. Não afirme que um método é sempre superior.", "fontes": ["F1", "F2"]}
+  ],
+  "fontes": [
+    {"id": "F1", "titulo": "SCA - Coffee Standards", "url": "https://sca.coffee/research/coffee-standards", "uso": "Referência de padrões de preparo; os exemplos numéricos aqui são exercícios de proporção, não receitas universais."},
+    {"id": "F2", "titulo": "Barista Hustle - Coffee Compass", "url": "https://www.baristahustle.com/coffee-compass/", "uso": "Referência prática para investigação e ajustes de extração; orientações resumidas pedagogicamente."},
+    {"id": "F3", "titulo": "SCA - Coffee Value Assessment", "url": "https://sca.coffee/value-assessment", "uso": "Referência para distinguir descrição sensorial de apreciação; o sistema não aplica nem certifica um protocolo oficial."}
+  ]
+}

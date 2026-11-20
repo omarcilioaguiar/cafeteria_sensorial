@@ -644,3 +644,7 @@ pre {
     width:340px;
   }
 }
+
+#new-conversation { align-self:flex-start; margin:0 18px; padding:6px 10px; border:1px solid #d3d7c5; background:transparent; color:#254b39; font:inherit; font-size:.75rem; border-radius:3px; cursor:pointer; }
+#new-conversation:focus-visible { outline:2px solid #254b39; outline-offset:2px; }
+#cache-status { margin:6px 18px 0; color:#64715c; font-size:.72rem; }

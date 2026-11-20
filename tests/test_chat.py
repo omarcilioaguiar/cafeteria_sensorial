@@ -52,7 +52,7 @@ async def test_model_tool_loop_and_history():
     assert tool_response.response["is_error"] is False
     config = model.models.generate_content.call_args_list[0].kwargs["config"]
     assert config.automatic_function_calling.disable is True
-    assert config.tool_config.function_calling_config.mode == "ANY"
+    assert config.tool_config.function_calling_config.mode == "AUTO"
 
 
 @pytest.mark.parametrize("tool_call", [call(name="executar_shell"), call(args="not-object"), call(args=[])])

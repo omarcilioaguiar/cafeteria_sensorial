@@ -7,6 +7,9 @@ from pathlib import Path
 from mcp import ClientSession
 from mcp.client.streamable_http import streamablehttp_client
 from playwright.async_api import async_playwright, expect
+from local_config import configure_ports
+
+configure_ports()
 
 ROOT = Path(__file__).resolve().parents[1]
 

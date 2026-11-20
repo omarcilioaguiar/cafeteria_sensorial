@@ -1,0 +1,67 @@
+{
+  "created_at": "2026-11-18T02:11:07.998185+00:00",
+  "status": "passed",
+  "responses": [
+    {
+      "answer": "Olá! Seja bem-vindo(a) à Cafeteria Sensorial! Sou seu assistente virtual especializado em cafés especiais, preparo, métodos, grãos e avaliação sensorial.\n\nSobre a sua dúvida, a **proporção entre café e água** (ou rácio) indica a relação em massa entre a quantidade de café moído utilizada e a água empregada no preparo [O1]. \n\nPor exemplo, em métodos coados, uma proporção de **1:15** significa que para cada **1 grama de café**, utilizamos **15 gramas de água** de preparo (ou seja, para 20 g de café, usaremos 300 g de água) [O1]. \n\nNo caso do espresso, é importante diferenciar a água colocada na máquina da **massa da bebida obtida** na xícara [O1]. Essa proporção funciona como uma receita inicial e um ponto de referência para o preparo, mas não é uma garantia de qualidade ou uma regra universal [O1, F1].",
+      "tools_used": [],
+      "evidence": [],
+      "cache": {
+        "hit": false,
+        "eligible": true,
+        "state": "ready"
+      },
+      "model": "gemini-flash-lite-latest"
+    },
+    {
+      "answer": "Olá! Seja bem-vindo(a) à Cafeteria Sensorial! Sou seu assistente virtual especializado em cafés especiais, preparo, métodos, grãos e avaliação sensorial.\n\nSobre a sua dúvida, a **proporção entre café e água** (ou rácio) indica a relação em massa entre a quantidade de café moído utilizada e a água empregada no preparo [O1]. \n\nPor exemplo, em métodos coados, uma proporção de **1:15** significa que para cada **1 grama de café**, utilizamos **15 gramas de água** de preparo (ou seja, para 20 g de café, usaremos 300 g de água) [O1]. \n\nNo caso do espresso, é importante diferenciar a água colocada na máquina da **massa da bebida obtida** na xícara [O1]. Essa proporção funciona como uma receita inicial e um ponto de referência para o preparo, mas não é uma garantia de qualidade ou uma regra universal [O1, F1].",
+      "tools_used": [],
+      "evidence": [],
+      "model": "gemini-flash-lite-latest",
+      "cache": {
+        "hit": true,
+        "state": "ready",
+        "distance": 0.02746129035949707
+      }
+    },
+    {
+      "answer": "Olá! Sou a Cafeteria Sensorial, sua assistente virtual especialista em cafés especiais, preparo, métodos, grãos e avaliação sensorial.\n\nEstes são os grãos cadastrados atualmente no catálogo:\n\n1. **ID 1:** Aurora da Chapada\n   - **Origem:** Fazenda Aurora, Chapada Diamantina, Brasil\n\n2. **ID 2:** Mantiqueira Doce\n   - **Origem:** Sítio das Nuvens, Mantiqueira de Minas, Brasil\n\n3. **ID 3:** Cerrado ao Sol\n   - **Origem:** Fazenda Horizonte, Cerrado Mineiro, Brasil",
+      "tools_used": [
+        "graos_listar"
+      ],
+      "evidence": [
+        {
+          "tool": "graos_listar",
+          "arguments": {},
+          "result": {
+            "is_error": false,
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"service\": \"graos\",\n  \"data\": [\n    {\n      \"nome\": \"Aurora da Chapada\",\n      \"origem\": {\n        \"fazenda\": \"Fazenda Aurora\",\n        \"regiao\": \"Chapada Diamantina\",\n        \"pais\": \"Brasil\"\n      },\n      \"variedade\": \"Catuaí amarelo\",\n      \"processo\": \"natural\",\n      \"ponto_torra\": \"clara\",\n      \"notas_sensoriais\": [\n        \"frutas amarelas\",\n        \"mel\",\n        \"floral\"\n      ],\n      \"preco_kg\": 98.0,\n      \"sacas_estoque\": 12,\n      \"id\": 1\n    },\n    {\n      \"nome\": \"Mantiqueira Doce\",\n      \"origem\": {\n        \"fazenda\": \"Sítio das Nuvens\",\n        \"regiao\": \"Mantiqueira de Minas\",\n        \"pais\": \"Brasil\"\n      },\n      \"variedade\": \"Bourbon amarelo\",\n      \"processo\": \"honey\",\n      \"ponto_torra\": \"média\",\n      \"notas_sensoriais\": [\n        \"caramelo\",\n        \"chocolate\",\n        \"castanhas\"\n      ],\n      \"preco_kg\": 112.0,\n      \"sacas_estoque\": 8,\n      \"id\": 2\n    },\n    {\n      \"nome\": \"Cerrado ao Sol\",\n      \"origem\": {\n        \"fazenda\": \"Fazenda Horizonte\",\n        \"regiao\": \"Cerrado Mineiro\",\n        \"pais\": \"Brasil\"\n      },\n      \"variedade\": \"Mundo novo\",\n      \"processo\": \"lavado\",\n      \"ponto_torra\": \"média\",\n      \"notas_sensoriais\": [\n        \"cacau\",\n        \"açúcar mascavo\",\n        \"laranja\"\n      ],\n      \"preco_kg\": 86.0,\n      \"sacas_estoque\": 20,\n      \"id\": 3\n    }\n  ]\n}",
+                "annotations": null,
+                "meta": null
+              }
+            ]
+          }
+        }
+      ],
+      "cache": {
+        "hit": false,
+        "eligible": false,
+        "state": "ready"
+      },
+      "model": "gemini-flash-lite-latest"
+    }
+  ],
+  "health": {
+    "status": "ok",
+    "provider": "gemini",
+    "configured": true,
+    "model": "gemini-flash-lite-latest",
+    "cache": {
+      "state": "ready",
+      "distance_limit": 0.2
+    }
+  }
+}

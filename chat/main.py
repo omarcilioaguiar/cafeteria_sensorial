@@ -3,6 +3,7 @@ import logging
 import os
 import time
 from collections import deque
+from contextlib import asynccontextmanager, suppress
 from typing import Literal
 
 from fastapi import FastAPI, HTTPException
@@ -12,8 +13,21 @@ import httpx
 from pydantic import BaseModel, ConfigDict, Field
 
 from bridge import mcp_session, run_chat
+from semantic_cache import SemanticCache, eligible
 
-app = FastAPI(title="Chat da Cafeteria Sensorial", version="1.0.0")
+semantic_cache = SemanticCache()
+
+
+@asynccontextmanager
+async def lifespan(app):
+    task = asyncio.create_task(asyncio.to_thread(semantic_cache.start))
+    yield
+    task.cancel()
+    with suppress(asyncio.CancelledError):
+        await task
+
+
+app = FastAPI(title="Especialista Cafeteria Sensorial", version="2.0.0", lifespan=lifespan)
 logger = logging.getLogger(__name__)
 
 # Rate limiter simples: máximo de requisições por janela de tempo.
@@ -47,12 +61,14 @@ class ChatRequest(BaseModel):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
     message: str = Field(min_length=1, max_length=2000)
     history: list[Message] = Field(default_factory=list, max_length=12)
+    use_cache: bool = True
 
 
 @app.get("/health")
 async def health():
     return {"status": "ok", "provider": "gemini", "configured": bool(os.getenv("GEMINI_API_KEY", "").strip()),
-            "model": os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest")}
+            "model": os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest"),
+            "cache": {"state": semantic_cache.state, "distance_limit": semantic_cache.threshold}}
 
 
 @app.get("/tools")
@@ -67,10 +83,18 @@ async def tools():
 
 @app.post("/chat")
 async def chat(payload: ChatRequest):
-    _check_rate_limit()
+    model = os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest")
+    history = [message.model_dump() for message in payload.history]
+    cacheable = payload.use_cache and eligible(payload.message, history)
+    if cacheable:
+        cached = await asyncio.to_thread(semantic_cache.lookup, payload.message, model)
+        if cached:
+            return {"answer": cached["answer"], "tools_used": [], "evidence": [], "model": model,
+                    "cache": {"hit": True, "state": semantic_cache.state, "distance": cached["distance"]}}
     key = os.getenv("GEMINI_API_KEY", "").strip()
     if not key:
         raise HTTPException(503, "Configure GEMINI_API_KEY no .env e recrie o contêiner chat para habilitar a IA.")
+    _check_rate_limit()
     try:
         async with asyncio.timeout(75):
             async with genai.Client(api_key=key, http_options=types.HttpOptions(
@@ -84,12 +108,15 @@ async def chat(payload: ChatRequest):
                     # o tipo do erro Gemini (em vez de envolvê-lo em ExceptionGroup).
                     try:
                         result = await run_chat(client, session, payload.message,
-                                                [message.model_dump() for message in payload.history],
-                                                os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest"))
+                                                history, model, include_evidence=True)
                     except Exception as exc:
                         failure = exc
                 if failure is not None:
                     raise failure
+                if cacheable and not result["tools_used"]:
+                    await asyncio.to_thread(semantic_cache.store, payload.message, result["answer"], model)
+                result["cache"] = {"hit": False, "eligible": cacheable, "state": semantic_cache.state}
+                result["model"] = model
                 return result
     except (TimeoutError, httpx.TimeoutException) as exc:
         raise HTTPException(504, "Tempo de resposta excedido. Tente novamente.") from exc
